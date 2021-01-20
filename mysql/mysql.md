@@ -14,11 +14,11 @@ drop user 'username'@'localhost'
 ### 查看用户权限
 show grants for 'username'@'host';
 ### 授权
-grant privileges on DATABASE_NAME.TABLE_NAME to 'username'@'host';
+grant all privileges on DATABASE_NAME.TABLE_NAME to 'username'@'host';
 flush privileges;
 
 ### 授权用户对某个数据库的所有表拥有所有操作权限
-grant all privileges on 'db_name'.* to 'username'@'host';
+grant all privileges on `db_name`.* to 'username'@'host';
 ### 对某个数据库某个表进行某些操作的授权
 grant select, insert, update on 'db_name'.'table_name' to 'username'@'host';
 
