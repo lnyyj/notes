@@ -10,7 +10,11 @@ import (
 )
 
 func Test_SimpleMain(t *testing.T) {
-	amqp.Dial(MQURL)
+	conn, err := amqp.Dial(MQURL)
+	checkerr("dail", err)
+
+	ch, err := conn.Channel()
+	checkerr("channel", err)
 }
 
 func Test_SimpleMQ(t *testing.T) {

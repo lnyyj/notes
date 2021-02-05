@@ -1,4 +1,4 @@
-package tmapping
+package ttp
 
 import (
 	"fmt"
