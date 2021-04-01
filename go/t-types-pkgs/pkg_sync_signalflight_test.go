@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"sync"
 	"testing"
-	"time"
 
 	"golang.org/x/sync/singleflight"
 )
@@ -17,11 +16,13 @@ func Test_signalDO(t *testing.T) {
 	for i := 0; i < 100; i++ {
 		go func(i int) {
 			<-ch
-			sg.Do("11111", func() {
-				time.Sleep(500 * time.Millisecond)
-				fmt.Println("---->", i)
+			ret, err, shard := sg.Do("11111", func() (v interface{}, err error) {
+				// time.Sleep(500 * time.Millisecond)
+				fmt.Println("->", i)
+				return i, nil
 			})
 			wg.Done()
+			fmt.Println("------>", ret, err, shard)
 		}(i)
 	}
 	close(ch)

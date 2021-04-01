@@ -10,7 +10,7 @@ func Test_law1(t *testing.T) {
 
 }
 
-type IT interface {
+type ITT interface {
 	DO()
 }
 
@@ -22,7 +22,7 @@ func (b B) DO() {
 }
 
 func Test_Implements(t *testing.T) {
-	_typer := reflect.TypeOf((*IT)(nil)).Elem()
+	_typer := reflect.TypeOf((*ITT)(nil)).Elem()
 	var b B
 	rv := reflect.ValueOf(&b)
 	ok := rv.Type().Implements(_typer)

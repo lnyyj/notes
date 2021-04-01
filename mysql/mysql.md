@@ -26,6 +26,29 @@ grant select, insert, update on 'db_name'.'table_name' to 'username'@'host';
 revoke privilege on DATABASE_NAME.TABLE_NAME from 'username'@'host';
 
 
+### 查看版本号
+select version();
+
+### 查看事物隔离级别
+select @@transaction_isolation;
+show variables like 'transaction_isolation';
+
+### 修改事物隔离级别
+- 读未提交: set global transaction isolation level read uncommitted; 
+- 读已提交: set global transaction isolation level read committed;  
+- 可重复读: set global transaction isolation level repeatable read;
+- 串行化: set global transaction isolation level serializable;
+
+| \ | 读脏 | 不可重复读  | 幻读  |  
+|:---:|:---:|:---:|:---:|
+| 读未提交| 可能 | 可能 | 可能 | 
+| 读已提交| 不可能 |  可能 | 可能 |  
+| 可重复读| 不可能 | 不可能 | 可能  |  
+| 串行化| 不可能 | 不可能 | 不可能 |  
+| 针对语句|insert,update,delete | update,delete  | insert |  
+
+
+
 ## golang 源码解析
     - database/sql
     - github.com/go-sql-driver/mysql

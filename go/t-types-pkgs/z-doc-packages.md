@@ -94,8 +94,12 @@ type RWMutex struct {
 读写互斥锁在互斥锁之上提供了额外的更细粒度的控制，能够在读操作远远多于写操作时提升性能。
 
 
-### sync.WaitGroup    
+### 同步等待 sync.WaitGroup    
 - 对 sync.WaitGroup 的分析和研究，我们能够得出以下结论：
     - sync.WaitGroup 必须在 sync.WaitGroup.Wait 方法返回之后才能被重新使用；
     - sync.WaitGroup.Done 只是对 sync.WaitGroup.Add 方法的简单封装，我们可以向 sync.WaitGroup.Add 方法传入任意负数（需要保证计数器非负）快速将计数器归零以唤醒等待的 Goroutine；
     - 可以同时有多个 Goroutine 等待当前 sync.WaitGroup 计数器的归零，这些 Goroutine 会被同时唤醒；
+
+### 防击穿 sync.SignalFlight
+- 同步方式
+- 异步方式
