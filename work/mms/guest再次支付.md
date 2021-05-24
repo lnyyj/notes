@@ -262,9 +262,52 @@ cloud 后台 {
 @enduml
 ```
 
+## 修改服务
+- 1. **user**
+    - guest upsert 注册事件
+- 2. **user-api** 
+    - 增加guestlogin
+    - login增加guestmigrate事件
+    - 对user服务版本有依赖，请求到老版本user有问题
+- 3. **cart**
+    - loginhandle 迁移优化 
+- 4. cart-worker
+    - 增加guestID 到 userID 购物车迁移
+    - 对cart服务版本有依赖，请求到老版本cart有问题
+- 5. order-worker
+    - 增加guestID 到 userID 订单迁移
+- 6. payment-worker
+    - 增加guestID 到 userID 卡号迁移
+- 7. **payment**
+    - 修改Authorise接口
+    - 修改RecurringDetails接口
+    - 请求到老版本的payment，会无法拿到guest迁移的卡号
+- 8. **address**
+    - 优化migrate接口
+- 9. address-worker
+    - 增加guestID 到 userID 地址迁移
+    - 对address有强依赖，请求到旧服务会导致，地址存在多份
+- 10. coupon-worker
+    - 增加guestID 到 userID 优惠券迁移
+- 11. **coupon**
+    - 优化对券逻辑
+    - 请求到老coupon，可能会出现重复对券的问题
+- 12. **noti**
+    - 优化guest email发送
+    - 优化安卓noti url
+    - 请求到老服务，发邮件会有问题
+- 13. **coupon-new-user**
+    - 取消guest新人券逻辑
+    - 需要全量更新，请求到老服务会出现重复发券问题
+
+
+
 ## Q&A
 - Q: noti通知方式确认？是否和原有逻辑一致？
   A:
+  
+  
+  
   
   
 
