@@ -2,6 +2,12 @@
 # shopping项目重构
 ## 1. 概述
 ## 2. 问题
+- 优惠quan: 
+    - 是否只有优惠券优惠
+- 物流渠道: 是否只有一个？
+- 关税的收取方式是什么，根据单收，还是根据商品收
+- 佣金Commission， 还有没有 
+    
 ## 3. 目标
 - 总体目标QPS达到1000
  
@@ -84,7 +90,35 @@
 
 ### 
     
-    
+### nginx 反向代理
+- 计价接口
+    - from: ***/shopping/cal_price/v4_4
+    - to: ***/order2/calc_price
+- 订单可以使用的优惠券
+    - from: ***/shopping/user_coupons_for_order
+    - to: ***/order2/coupons
+- 下单
+    - from: ***/shopping/cart/checkout/entries
+    - to: ***/order2/place_order
+- 获取订单详情
+    - from: ***/shopping/orders_v43/${orderId}
+    - to: ***/order2/detail/{order_id}
+- Paypal支付
+    - from: ***/shopping/orders/<order_id>/pay/<ptype>/paypal
+    - to: ***/order2/paypal/pay/{ptype}/{order_id}
+- paypal 支付完成后通知服务器
+    - from: ***/shopping/orders/<order_id>/paypal_finished/<pay_id>
+    - to: ***/order2/Paypal/{order_id}/{pay_id}
+- AdyenPay 订单付款
+    - from: ***/shopping/orders/<order_id>/pay/any/adyen
+    - to: ***/order2/adyen/any/{order_id} 
+- 获取支付方式
+    - from: ***/shopping/orders/{order_id}/pay_cm
+    - to: ***/order2/payment_methods/{order_id}
+- 客户端通知支付成功
+    - from: ***/shopping/orders/{order_id}/paid_from_client
+    - to: ***/order2/paid_from_client/{order_id}
+
 ## 5. 设计方案
 - 第一阶段选用方案2
 
