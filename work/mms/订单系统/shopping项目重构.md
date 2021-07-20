@@ -308,7 +308,56 @@ shopping -> shopping: 修改状态
             - 内测后开始灰度
                 - 灰度占比: 10% -> 20% -> 50% -> 80% -> 100%
                 - 每轮灰度三天
-        
+
+                
+### 发布流程
+#### 发布服务
+- coupon-backend(新增接口，不影响线上运行)
+- address（新增接口，不影响线上运行）
+- shopping
+#### 发布配置
+- coupon-backen/address配置不变
+- shopping配置如下
+
+```
+    port: 58888
+    shoppingAuthSecret: "ntS35sj65EiGSCWDWj08"
+    shoppingTokenExpireDays: 30
+    rpcTimeout: 10s
+    debug: true
+    
+    # mrpc 地址(注意核对端口)
+    shoppingInventoryAddress: "v1.4.9.shopping- inventory.service.consul:52692"
+    orderPriceAddress: "order-price.service.consul:52671"
+    forexAddress: "forex.service.consul:52673"
+    ordersAddress: "orders.service.consul:51924"
+    
+    
+    # grpc 服务名
+    paymentServerName: "payment"
+    couponBackendSrvName: "coupon-backend"
+    cartSrvName: "cart"
+    metadataSrvName: "metadata"
+    addressSrvName: "address"
+    ordersSrvName: "orders"
+    couponSrvName: "coupon"
+    
+```
+    
+#### 流程
+1. 发布coupon-backend服务
+2. 发布address服务
+3. 增加shopping配置
+4. 修改gateway中order2配置
+    1. coupon-backend : 需求版本  v1.7.1
+    2. coupon : 需求版本  v1.7.1
+    3. address: 需求版本  v1.1.0
+    4. payment: 需求版本  v3.2![](media/16261492108552.jpg)
+.0
+    5. shopping:  版本  v3.0.2
+5. 发布shopping
+
+
 ###  后续规划
 - 废弃shopping/v_43/detail接口，统一接order-api/detail (web)
 - 废弃shopping/pay相关接口，统一接payment服务(ios)
